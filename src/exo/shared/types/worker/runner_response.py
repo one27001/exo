@@ -16,8 +16,9 @@ class BaseRunnerResponse(TaggedModel):
     pass
 
 
-class TokenizedResponse(BaseRunnerResponse):
-    prompt_tokens: int
+class ModelLoadingResponse(BaseRunnerResponse):
+    layers_loaded: int
+    total: int
 
 
 class GenerationResponse(BaseRunnerResponse):
@@ -70,6 +71,26 @@ class FinishedResponse(BaseRunnerResponse):
     pass
 
 
+class CancelledResponse(BaseRunnerResponse):
+    pass
+
+
 class PrefillProgressResponse(BaseRunnerResponse):
     processed_tokens: int
     total_tokens: int
+
+
+type TextResponse = (
+    PrefillProgressResponse
+    | GenerationResponse
+    | ToolCallResponse
+    | FinishedResponse
+    | CancelledResponse
+)
+type ImageResponse = (
+    PartialImageResponse
+    | ImageGenerationResponse
+    | FinishedResponse
+    | CancelledResponse
+)
+type Response = TextResponse | ImageResponse
